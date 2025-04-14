@@ -9,5 +9,6 @@ data class ItemsModel(
     var price:Double=0.0,
     var rating:Double=0.0,
     var numberInCart:Int=0,
+    var category:String=""
     var extra:String=""
 ) : Serializable
