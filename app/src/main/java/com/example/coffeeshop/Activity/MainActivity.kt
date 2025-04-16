@@ -28,6 +28,17 @@ class MainActivity : AppCompatActivity() {
         initPopular()
     }
 
+    private fun initBanner() {
+        binding.progressBarBanner.visibility=View.VISIBLE
+        viewModel.loadBanner().observeForever {
+            Glide.with(this@MainActivity)
+                .load(it[0].url)
+                .into(binding.banner)
+            binding.progressBarBanner.visibility=View.GONE
+        }
+        viewModel.loadBanner()
+    }
+
     private fun initcategorty(){
         binding.progressBarCategory.visibility=View.VISIBLE
         viewModel.loadCategory().observeForever {
