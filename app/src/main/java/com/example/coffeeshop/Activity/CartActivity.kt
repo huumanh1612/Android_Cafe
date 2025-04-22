@@ -1,0 +1,62 @@
+package com.example.coffeeshop.Activity
+
+import android.os.Bundle
+import androidx.activity.enableEdgeToEdge
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.ViewCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.coffeeshop.Adapter.CartAdapter
+import com.example.coffeeshop.Helper.ChangeNumberItemsListener
+import com.example.coffeeshop.R
+import com.example.coffeeshop.databinding.ActivityCartBinding
+import com.example.coffeeshop.databinding.ViewholderCartBinding
+import com.example.coffeeshop.Helper.ManagmentCart
+
+class CartActivity : AppCompatActivity() {
+    lateinit var binding: ActivityCartBinding
+    lateinit var managmentCart: ManagmentCart
+    private var tax: Double = 0.0
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
+        binding= ActivityCartBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+
+        managmentCart=ManagmentCart(this)
+
+        calculateCart()
+        setVariable()
+        initCartList()
+    }
+
+    private fun initCartList() {
+        binding.apply {
+            listView.layoutManager=
+                LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false
+                object :ChangeNumberItemsListener{
+                    override fun onChanged() {
+                        calculateCart()
+                    }
+
+                }
+            )
+        }
+    }
+
+    private fun setVariable() {
+        binding.backBtn.setOnClickListener { finish() }
+    }
+
+    private fun calculateCart() {
+        val pecentTax=0.03
+        val delivery=12
+        tax=Math.round((managmentCart.getTotalFee()*pecentTax)*100)/100.0
+        val total=Math.round((managmentCart.getTotalFee()+tax+delivery)*100)/100
+        val itemTotal=Math.round(managmentCart.getTotalFee()*100)/100
+            binding.apply {
+                totalFeeTxt.text="$$itemTotal"
+                totalTxt.text="$$total"
+            }
+    }
+}
