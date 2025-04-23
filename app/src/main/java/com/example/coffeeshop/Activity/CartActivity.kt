@@ -33,7 +33,10 @@ class CartActivity : AppCompatActivity() {
     private fun initCartList() {
         binding.apply {
             listView.layoutManager=
-                LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false
+                LinearLayoutManager(this@CartActivity, LinearLayoutManager.VERTICAL, false)
+            listView.adapter=CartAdapter(
+                managmentCart.getListCart(),
+                this@CartActivity,
                 object :ChangeNumberItemsListener{
                     override fun onChanged() {
                         calculateCart()
@@ -56,6 +59,8 @@ class CartActivity : AppCompatActivity() {
         val itemTotal=Math.round(managmentCart.getTotalFee()*100)/100
             binding.apply {
                 totalFeeTxt.text="$$itemTotal"
+                taxTxt.text="$$tax"
+                deliveryTxt.text="$$delivery"
                 totalTxt.text="$$total"
             }
     }
